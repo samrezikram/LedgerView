@@ -6,7 +6,7 @@ import { useFavorites } from '../context/FavoritesContext';
 
 export default function FavoritesScreen() {
   const { signOut } = useAuth();
-  const { favorites, isLoading } = useFavorites();
+  const { favorites, isLoading, toggleFavorite } = useFavorites();
   const formatPrice = useCallback((value: string) => {
     const parsed = Number(value);
     return Number.isNaN(parsed) ? '--' : parsed.toFixed(2);
@@ -19,13 +19,14 @@ export default function FavoritesScreen() {
         subtitle="Your saved coins in one place."
         rightAction={
           <IconButton
-            icon="OUT"
+            icon="Logout"
             onPress={() =>
               Alert.alert('Sign out', 'Are you sure you want to log out?', [
                 { text: 'Cancel', style: 'cancel' },
                 { text: 'Log out', style: 'destructive', onPress: signOut },
               ])
             }
+            size="pill"
           />
         }
       />
@@ -51,9 +52,11 @@ export default function FavoritesScreen() {
                 <AppText variant="bodyLg" style={styles.coinName}>
                   {item.name}
                 </AppText>
-                <AppText tone="muted" style={styles.rank}>
-                  #{item.rank}
-                </AppText>
+                <IconButton
+                  icon="Remove"
+                  size="pill"
+                  onPress={() => toggleFavorite(item)}
+                />
               </View>
               <View style={styles.rowFooter}>
                 <AppText tone="muted">{item.symbol}</AppText>
@@ -97,10 +100,6 @@ const styles = StyleSheet.create({
   coinName: {
     flex: 1,
     marginRight: 12,
-  },
-  rank: {
-    minWidth: 44,
-    textAlign: 'right',
   },
   rowFooter: {
     marginTop: 8,

@@ -103,9 +103,9 @@ export default function HomeScreen() {
             #{item.rank}
           </AppText>
           <IconButton
-            icon={isFavorite(item.uuid) ? 'FAV' : 'ADD'}
+            icon={isFavorite(item.uuid) ? 'Saved' : 'Save'}
             active={isFavorite(item.uuid)}
-            size="sm"
+            size="pill"
             onPress={() => toggleFavorite(item)}
             style={styles.favoriteButton}
           />
@@ -125,13 +125,14 @@ export default function HomeScreen() {
         subtitle="Live crypto listings powered by CoinRanking."
         rightAction={
           <IconButton
-            icon="OUT"
+            icon="Logout"
             onPress={() =>
               Alert.alert('Sign out', 'Are you sure you want to log out?', [
                 { text: 'Cancel', style: 'cancel' },
                 { text: 'Log out', style: 'destructive', onPress: signOut },
               ])
             }
+            size="pill"
           />
         }
       />
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
   rowHeaderRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
   },
   rank: {
     minWidth: 44,
