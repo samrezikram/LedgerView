@@ -1,13 +1,3 @@
-import React from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  ListRenderItemInfo,
-  Pressable,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   AppText,
   Card,
@@ -17,6 +7,7 @@ import {
   Screen,
   TopBar,
 } from '@components';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   useCoinDetailSheet,
   useCoins,
@@ -26,6 +17,15 @@ import {
 } from '@hooks';
 import { Coin, CoinOrderBy, OrderDirection } from '@lib/coinranking';
 import { useTheme } from '@theme';
+import React from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  ListRenderItemInfo,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 const ORDER_OPTIONS: { label: string; value: CoinOrderBy }[] = [
   { label: 'Price', value: 'price' },
@@ -41,7 +41,8 @@ export default function HomeScreen() {
   const theme = useTheme();
   const { handleLogout, isAuthBusy } = useLogout();
   const { toggleFavorite, isFavorite } = useFavoritesState();
-  const sheetRef = React.useRef<BottomSheetModal>(null);
+  const sheetRef = React.useRef<BottomSheetModal | null>(null);
+
   const {
     selectedCoin,
     history,

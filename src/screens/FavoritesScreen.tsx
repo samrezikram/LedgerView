@@ -1,6 +1,3 @@
-import React from 'react';
-import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   AppText,
   Card,
@@ -9,12 +6,15 @@ import {
   Screen,
   TopBar,
 } from '@components';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   useCoinDetailSheet,
   useFavoritesState,
   useFormatters,
   useLogout,
 } from '@hooks';
+import React from 'react';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
 function ItemSeparator() {
   return <View style={styles.separator} />;
@@ -40,31 +40,31 @@ export default function FavoritesScreen() {
       keyExtractor={item => item.uuid}
       contentContainerStyle={styles.list}
       ItemSeparatorComponent={ItemSeparator}
-          renderItem={({ item }) => (
-            <Pressable onPress={() => openCoin(item)}>
-              <Card style={styles.row}>
-              <View style={styles.rowHeader}>
-                <AppText variant="bodyLg" style={styles.coinName}>
-                  {item.name}
-                </AppText>
-                <IconButton
-                  icon="Remove"
-                  size="pill"
-                  onPress={event => {
-                    event.stopPropagation();
-                    toggleFavorite(item);
-                  }}
-                />
-              </View>
-              <View style={styles.rowFooter}>
-                <AppText tone="muted">{item.symbol}</AppText>
-                <AppText variant="bodyLg">${formatPrice(item.price)}</AppText>
-              </View>
-              </Card>
-            </Pressable>
-          )}
-        />
-      );
+      renderItem={({ item }) => (
+        <Pressable onPress={() => openCoin(item)}>
+          <Card style={styles.row}>
+            <View style={styles.rowHeader}>
+              <AppText variant="bodyLg" style={styles.coinName}>
+                {item.name}
+              </AppText>
+              <IconButton
+                icon="Remove"
+                size="pill"
+                onPress={event => {
+                  event.stopPropagation();
+                  toggleFavorite(item);
+                }}
+              />
+            </View>
+            <View style={styles.rowFooter}>
+              <AppText tone="muted">{item.symbol}</AppText>
+              <AppText variant="bodyLg">${formatPrice(item.price)}</AppText>
+            </View>
+          </Card>
+        </Pressable>
+      )}
+    />
+  );
 
   if (isLoading) {
     content = (

@@ -12,7 +12,7 @@ import { StyleSheet, View } from 'react-native';
 import { VictoryAxis, VictoryChart, VictoryLine } from 'victory-native';
 
 type CoinDetailSheetProps = {
-  readonly sheetRef: React.RefObject<BottomSheetModal>;
+  readonly sheetRef: React.RefObject<BottomSheetModal | null>;
   readonly coin: Coin | null;
   readonly history: CoinHistoryPoint[];
   readonly isLoading: boolean;
