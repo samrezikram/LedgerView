@@ -19,8 +19,8 @@ export default function IconButton({
   size = 'md',
 }: IconButtonProps) {
   const theme = useTheme();
-  const dimension = size === 'sm' ? 30 : size === 'pill' ? 34 : 36;
-  const pillWidth = size === 'pill' ? 64 : dimension;
+  const isPill = size === 'pill';
+  const dimension = size === 'sm' ? 30 : 36;
 
   return (
     <Pressable
@@ -28,9 +28,10 @@ export default function IconButton({
       style={({ pressed }) => [
         styles.base,
         {
-          height: dimension,
-          width: pillWidth,
-          borderRadius: size === 'pill' ? 999 : dimension / 2,
+          height: isPill ? 34 : dimension,
+          minWidth: isPill ? 72 : dimension,
+          paddingHorizontal: isPill ? 12 : 0,
+          borderRadius: isPill ? 999 : dimension / 2,
           backgroundColor: active ? theme.colors.primarySoft : theme.colors.surfaceAlt,
           borderColor: active ? theme.colors.primary : theme.colors.border,
           opacity: pressed ? 0.7 : 1,
@@ -61,6 +62,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.4,
     textAlign: 'center',
-    width: 40,
+    lineHeight: 14,
   },
 });
