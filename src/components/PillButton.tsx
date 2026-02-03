@@ -26,7 +26,7 @@ export default function PillButton({
         {
           backgroundColor: selected
             ? theme.colors.primary
-            : theme.colors.surface,
+            : theme.colors.surfaceAlt,
           borderColor: selected ? theme.colors.primary : theme.colors.border,
           opacity: pressed ? 0.8 : 1,
         },
