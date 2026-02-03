@@ -1,22 +1,14 @@
 import React, { useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AppText, Button, Card, Screen } from '../../components';
+import { AppInput, AppText, Button, Card, Screen } from '../../components';
 import { useAuth } from '../../context/AuthContext';
 import { envStatus, isEnvReady } from '../../lib/env';
-import { useTheme } from '../../theme';
 import { AuthStackParamList } from '../../navigation/AppNavigator';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
 export default function LoginScreen({ navigation }: Props) {
-  const theme = useTheme();
   const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -60,45 +52,21 @@ export default function LoginScreen({ navigation }: Props) {
             </AppText>
           ) : null}
           <View style={styles.field}>
-            <AppText tone="muted" style={styles.label}>
-              Email
-            </AppText>
-            <TextInput
+            <AppInput
+              label="Email"
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="email-address"
               placeholder="you@company.com"
-              placeholderTextColor={theme.colors.inkMuted}
-              style={[
-                styles.input,
-                {
-                  borderColor: theme.colors.border,
-                  color: theme.colors.ink,
-                  backgroundColor: theme.colors.surface,
-                  fontFamily: theme.typography.families.regular,
-                },
-              ]}
               value={email}
               onChangeText={setEmail}
             />
           </View>
           <View style={styles.field}>
-            <AppText tone="muted" style={styles.label}>
-              Password
-            </AppText>
-            <TextInput
+            <AppInput
+              label="Password"
               placeholder="••••••••"
-              placeholderTextColor={theme.colors.inkMuted}
               secureTextEntry
-              style={[
-                styles.input,
-                {
-                  borderColor: theme.colors.border,
-                  color: theme.colors.ink,
-                  backgroundColor: theme.colors.surface,
-                  fontFamily: theme.typography.families.regular,
-                },
-              ]}
               value={password}
               onChangeText={setPassword}
             />
@@ -147,16 +115,6 @@ const styles = StyleSheet.create({
   },
   field: {
     marginBottom: 16,
-  },
-  label: {
-    marginBottom: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    fontSize: 15,
   },
   error: {
     marginBottom: 12,

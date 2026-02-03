@@ -15,3 +15,11 @@ export const envStatus = {
 };
 
 export const isEnvReady = envStatus.missing.length === 0;
+
+export const assertEnvReady = () => {
+  if (!__DEV__ && !isEnvReady) {
+    throw new Error(
+      `Missing environment variables: ${envStatus.missing.join(', ')}`
+    );
+  }
+};
