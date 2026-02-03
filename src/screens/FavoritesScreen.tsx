@@ -1,7 +1,20 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { AppText, Card, IconButton, Screen, TopBar } from '@components';
-import { useCoins, useFavoritesState, useLogout } from '@hooks';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import {
+  AppText,
+  Card,
+  CoinDetailSheet,
+  IconButton,
+  Screen,
+  TopBar,
+} from '@components';
+import {
+  useCoinDetailSheet,
+  useFavoritesState,
+  useFormatters,
+  useLogout,
+} from '@hooks';
 
 function ItemSeparator() {
   return <View style={styles.separator} />;
@@ -10,7 +23,16 @@ function ItemSeparator() {
 export default function FavoritesScreen() {
   const { handleLogout, isAuthBusy } = useLogout();
   const { favorites, isLoading, toggleFavorite } = useFavoritesState();
-  const { formatPrice } = useCoins();
+  const { formatPrice } = useFormatters();
+  const sheetRef = React.useRef<BottomSheetModal>(null);
+  const {
+    selectedCoin,
+    history,
+    isLoading: isHistoryLoading,
+    error,
+    highLow,
+    openCoin,
+  } = useCoinDetailSheet({ sheetRef });
 
   let content = (
     <FlatList
@@ -18,26 +40,31 @@ export default function FavoritesScreen() {
       keyExtractor={item => item.uuid}
       contentContainerStyle={styles.list}
       ItemSeparatorComponent={ItemSeparator}
-      renderItem={({ item }) => (
-        <Card style={styles.row}>
-          <View style={styles.rowHeader}>
-            <AppText variant="bodyLg" style={styles.coinName}>
-              {item.name}
-            </AppText>
-            <IconButton
-              icon="Remove"
-              size="pill"
-              onPress={() => toggleFavorite(item)}
-            />
-          </View>
-          <View style={styles.rowFooter}>
-            <AppText tone="muted">{item.symbol}</AppText>
-            <AppText variant="bodyLg">${formatPrice(item.price)}</AppText>
-          </View>
-        </Card>
-      )}
-    />
-  );
+          renderItem={({ item }) => (
+            <Pressable onPress={() => openCoin(item)}>
+              <Card style={styles.row}>
+              <View style={styles.rowHeader}>
+                <AppText variant="bodyLg" style={styles.coinName}>
+                  {item.name}
+                </AppText>
+                <IconButton
+                  icon="Remove"
+                  size="pill"
+                  onPress={event => {
+                    event.stopPropagation();
+                    toggleFavorite(item);
+                  }}
+                />
+              </View>
+              <View style={styles.rowFooter}>
+                <AppText tone="muted">{item.symbol}</AppText>
+                <AppText variant="bodyLg">${formatPrice(item.price)}</AppText>
+              </View>
+              </Card>
+            </Pressable>
+          )}
+        />
+      );
 
   if (isLoading) {
     content = (
@@ -70,6 +97,15 @@ export default function FavoritesScreen() {
         }
       />
       {content}
+      <CoinDetailSheet
+        sheetRef={sheetRef}
+        coin={selectedCoin}
+        history={history}
+        isLoading={isHistoryLoading}
+        error={error}
+        high={formatPrice(String(highLow.high))}
+        low={formatPrice(String(highLow.low))}
+      />
     </Screen>
   );
 }

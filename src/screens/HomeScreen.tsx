@@ -14,7 +14,7 @@ import {
   Screen,
   TopBar,
 } from '@components';
-import { useCoins, useFavoritesState, useLogout } from '@hooks';
+import { useCoins, useFavoritesState, useFormatters, useLogout } from '@hooks';
 import { Coin, CoinOrderBy, OrderDirection } from '@lib/coinranking';
 import { useTheme } from '@theme';
 
@@ -42,8 +42,8 @@ export default function HomeScreen() {
     setOrderBy,
     setOrderDirection,
     loadMore,
-    formatPrice,
   } = useCoins();
+  const { formatPrice } = useFormatters();
 
   const renderItem = ({ item }: ListRenderItemInfo<Coin>) => (
     <Card style={styles.row}>
@@ -52,9 +52,9 @@ export default function HomeScreen() {
         <View style={styles.rowHeaderRight}>
           <AppText tone="muted">#{item.rank}</AppText>
           <IconButton
-            icon={isFavorite(item.uuid) ? 'FAV' : 'ADD'}
+            icon={isFavorite(item.uuid) ? 'Saved' : 'Save'}
             active={isFavorite(item.uuid)}
-            size="sm"
+            size="pill"
             onPress={() => toggleFavorite(item)}
             style={styles.favoriteButton}
           />

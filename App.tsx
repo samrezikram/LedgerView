@@ -12,6 +12,7 @@ import { AuthProvider } from '@context/AuthContext';
 import { FavoritesProvider } from '@context/FavoritesContext';
 import { ThemeProvider } from '@theme';
 import { assertEnvReady } from '@lib/env';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -23,7 +24,9 @@ function App() {
       <ThemeProvider>
         <AuthProvider>
           <FavoritesProvider>
-            <AppContent />
+            <BottomSheetModalProvider>
+              <AppContent />
+            </BottomSheetModalProvider>
           </FavoritesProvider>
         </AuthProvider>
       </ThemeProvider>

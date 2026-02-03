@@ -63,11 +63,6 @@ export function useCoins() {
     loadCoins(0, false);
   }, [loadCoins]);
 
-  const formatPrice = useCallback((value: string) => {
-    const parsed = Number(value);
-    return Number.isNaN(parsed) ? '--' : parsed.toFixed(2);
-  }, []);
-
   return {
     coins,
     isLoading,
@@ -79,6 +74,5 @@ export function useCoins() {
     setOrderDirection,
     loadMore,
     refresh,
-    formatPrice,
   };
 }

@@ -12,6 +12,16 @@ export type Coin = {
   listedAt?: number;
 };
 
+export type CoinHistoryPoint = {
+  price: string;
+  timestamp: number;
+};
+
+export type CoinHistoryResponse = {
+  change: string;
+  history: CoinHistoryPoint[];
+};
+
 export type CoinStats = {
   total: number;
   totalCoins: number;
@@ -35,6 +45,11 @@ type CoinResponse = {
     stats: CoinStats;
     coins: Coin[];
   };
+};
+
+type CoinHistoryApiResponse = {
+  status: string;
+  data: CoinHistoryResponse;
 };
 
 const BASE_URL = 'https://api.coinranking.com/v2';
@@ -64,5 +79,30 @@ export async function fetchCoins(params: {
   }
 
   const payload = (await response.json()) as CoinResponse;
+  return payload.data;
+}
+
+export async function fetchCoinHistory(params: {
+  uuid: string;
+  timePeriod?: string;
+}) {
+  const query = new URLSearchParams();
+  if (params.timePeriod) query.append('timePeriod', params.timePeriod);
+
+  const response = await fetch(
+    `${BASE_URL}/coin/${params.uuid}/price-history?${query.toString()}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': env.coinrankingApiKey,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`CoinRanking history error: ${response.status}`);
+  }
+
+  const payload = (await response.json()) as CoinHistoryApiResponse;
   return payload.data;
 }

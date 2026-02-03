@@ -1,11 +1,16 @@
 import { useTheme } from '@theme';
 import React from 'react';
-import { Pressable, StyleSheet, ViewStyle } from 'react-native';
+import {
+  GestureResponderEvent,
+  Pressable,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
 import AppText from './AppText';
 
 type IconButtonProps = {
   readonly icon: string;
-  readonly onPress?: () => void;
+  readonly onPress?: (event: GestureResponderEvent) => void;
   readonly style?: ViewStyle;
   readonly active?: boolean;
   readonly size?: 'sm' | 'md' | 'pill';
