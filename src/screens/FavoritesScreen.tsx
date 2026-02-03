@@ -1,32 +1,26 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { AppText, Card, Screen } from '../components';
 
 export default function FavoritesScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Favorites</Text>
-      <Text style={styles.subtitle}>
+    <Screen>
+      <AppText variant="headline">Favorites</AppText>
+      <AppText variant="bodyLg" tone="muted" style={styles.subtitle}>
         Your saved coins will live here with quick access to details.
-      </Text>
-    </View>
+      </AppText>
+      <Card style={styles.card}>
+        <AppText tone="muted">Favorites list persistence is next.</AppText>
+      </Card>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 24,
-    backgroundColor: '#F6F7FB',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#0B0F1A',
-  },
   subtitle: {
     marginTop: 12,
-    fontSize: 14,
-    color: '#5B6474',
+  },
+  card: {
+    marginTop: 20,
   },
 });

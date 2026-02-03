@@ -3,6 +3,7 @@ import React from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import HomeScreen from '../screens/HomeScreen';
+import { useTheme } from '../theme';
 
 export type RootTabParamList = {
   Home: undefined;
@@ -11,24 +12,42 @@ export type RootTabParamList = {
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
-const tabIcons: Record<keyof RootTabParamList, string> = {
-  Home: '🏠',
-  Favorites: '⭐️',
-};
-
 export default function RootTabs() {
+  const theme = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: true,
+        headerStyle: {
+          backgroundColor: theme.colors.surface,
+          borderBottomColor: theme.colors.border,
+          borderBottomWidth: 1,
+        },
+        headerTitleStyle: {
+          fontSize: 18,
+          fontWeight: '700',
+          color: theme.colors.ink,
+        },
         tabBarShowLabel: true,
         tabBarLabelStyle: styles.tabLabel,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.inkMuted,
         tabBarIcon: ({ focused }) => (
-          <Text style={[styles.tabIcon, focused && styles.tabIconActive]}>
-            {tabIcons[route.name]}
+          <Text
+            style={[
+              styles.tabIcon,
+              { color: focused ? theme.colors.primary : theme.colors.inkMuted },
+              focused && styles.tabIconActive,
+            ]}
+          >
+            {route.name === 'Home' ? 'H' : 'F'}
           </Text>
         ),
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: [
+          styles.tabBar,
+          { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border },
+        ],
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
@@ -42,7 +61,7 @@ const styles = StyleSheet.create({
     height: Platform.select({ ios: 84, android: 72, default: 72 }),
     paddingTop: 8,
     paddingBottom: Platform.select({ ios: 24, android: 12, default: 12 }),
-    borderTopWidth: 0,
+    borderTopWidth: 1,
     elevation: 6,
     shadowColor: '#0B0F1A',
     shadowOffset: { width: 0, height: -6 },

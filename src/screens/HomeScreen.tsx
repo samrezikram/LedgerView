@@ -1,32 +1,29 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { AppText, Card, Screen } from '../components';
+import { useTheme } from '../theme';
 
 export default function HomeScreen() {
+  const theme = useTheme();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Market Overview</Text>
-      <Text style={styles.subtitle}>
+    <Screen>
+      <AppText variant="headline">Market Overview</AppText>
+      <AppText variant="bodyLg" tone="muted" style={styles.subtitle}>
         Crypto listings will appear here with sorting and pagination.
-      </Text>
-    </View>
+      </AppText>
+      <Card style={[styles.card, { borderColor: theme.colors.border }]}>
+        <AppText tone="muted">Design system toolkit is now in place.</AppText>
+      </Card>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 24,
-    backgroundColor: '#F6F7FB',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#0B0F1A',
-  },
   subtitle: {
     marginTop: 12,
-    fontSize: 14,
-    color: '#5B6474',
+  },
+  card: {
+    marginTop: 20,
   },
 });
