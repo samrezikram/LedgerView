@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Coin, CoinOrderBy, fetchCoins, OrderDirection } from '../lib/coinranking';
+import { Coin, CoinOrderBy, fetchCoins, OrderDirection } from '@lib/coinranking';
 
 const PAGE_LIMIT = 25;
 

@@ -6,10 +6,17 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { AppText, Card, IconButton, PillButton, Screen, TopBar } from '../components';
-import { useCoins, useFavoritesState, useLogout } from '../hooks';
-import { Coin, CoinOrderBy, OrderDirection } from '../lib/coinranking';
-import { useTheme } from '../theme';
+import {
+  AppText,
+  Card,
+  IconButton,
+  PillButton,
+  Screen,
+  TopBar,
+} from '@components';
+import { useCoins, useFavoritesState, useLogout } from '@hooks';
+import { Coin, CoinOrderBy, OrderDirection } from '@lib/coinranking';
+import { useTheme } from '@theme';
 
 const ORDER_OPTIONS: { label: string; value: CoinOrderBy }[] = [
   { label: 'Price', value: 'price' },
@@ -18,6 +25,8 @@ const ORDER_OPTIONS: { label: string; value: CoinOrderBy }[] = [
   { label: 'Change', value: 'change' },
   { label: 'Listed', value: 'listedAt' },
 ];
+
+const ItemSeparator = () => <View style={styles.separator} />;
 
 export default function HomeScreen() {
   const theme = useTheme();
@@ -116,7 +125,7 @@ export default function HomeScreen() {
           onEndReached={loadMore}
           onEndReachedThreshold={0.6}
           contentContainerStyle={styles.list}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          ItemSeparatorComponent={ItemSeparator}
           ListFooterComponent={
             isLoadingMore ? (
               <View style={styles.loadingMore}>
@@ -163,8 +172,8 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingHorizontal: 20,
-    paddingBottom: 24,
-    paddingTop: 8,
+    paddingBottom: 12,
+    paddingTop: 12,
   },
   separator: {
     height: 12,

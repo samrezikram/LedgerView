@@ -2,12 +2,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import RootTabs from './RootTabs';
-import LoginScreen from '../screens/auth/LoginScreen';
-import RegisterScreen from '../screens/auth/RegisterScreen';
-import { useAuth } from '../context/AuthContext';
-import { AppText, Screen } from '../components';
-import { useTheme } from '../theme';
+import { AppText, Screen } from '@components';
+import { useAuth } from '@context/AuthContext';
+import LoginScreen from '@auth/LoginScreen';
+import RegisterScreen from '@auth/RegisterScreen';
+import { useTheme } from '@theme';
+import RootTabs from '@navigation/RootTabs';
 
 export type AuthStackParamList = {
   Login: undefined;
@@ -41,7 +41,9 @@ export default function AppNavigator() {
         )}
       </NavigationContainer>
       {isAuthBusy ? (
-        <View style={[styles.overlay, { backgroundColor: theme.colors.canvas }]}>
+        <View
+          style={[styles.overlay, { backgroundColor: theme.colors.canvas }]}
+        >
           <ActivityIndicator color={theme.colors.primary} />
           <AppText tone="muted" style={styles.overlayText}>
             Securing your session...

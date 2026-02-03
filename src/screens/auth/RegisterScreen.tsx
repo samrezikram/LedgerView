@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AppInput, AppText, Button, Card, Screen } from '../../components';
-import { useAuth } from '../../context/AuthContext';
-import { envStatus, isEnvReady } from '../../lib/env';
-import { useTheme } from '../../theme';
-import { AuthStackParamList } from '../../navigation/AppNavigator';
+import React, { useState } from 'react';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  View,
+} from 'react-native';
+import { AppInput, AppText, Button, Card, Screen } from '@components';
+import { useAuth } from '@context/AuthContext';
+import { envStatus, isEnvReady } from '@lib/env';
+import { AuthStackParamList } from '@navigation/AppNavigator';
+import { useTheme } from '@theme';
 
-type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
+type Props = Readonly<NativeStackScreenProps<AuthStackParamList, 'Register'>>;
 
-export default function RegisterScreen({ navigation }: Props) {
+export default function RegisterScreen({ navigation }: Readonly<Props>) {
   const theme = useTheme();
   const { signUp } = useAuth();
   const [email, setEmail] = useState('');
@@ -32,7 +38,7 @@ export default function RegisterScreen({ navigation }: Props) {
     }
     Alert.alert(
       'Account created',
-      'Check your email to confirm your account before signing in.'
+      'Check your email to confirm your account before signing in.',
     );
     navigation.navigate('Login');
   };

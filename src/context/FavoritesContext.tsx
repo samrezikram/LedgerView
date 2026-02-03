@@ -1,10 +1,24 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { Coin } from '../lib/coinranking';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { Coin } from '@lib/coinranking';
 
 export type FavoriteCoin = Pick<
   Coin,
-  'uuid' | 'rank' | 'name' | 'symbol' | 'price' | 'change' | 'iconUrl' | 'marketCap' | 'listedAt'
+  | 'uuid'
+  | 'rank'
+  | 'name'
+  | 'symbol'
+  | 'price'
+  | 'change'
+  | 'iconUrl'
+  | 'marketCap'
+  | 'listedAt'
 > & {
   savedAt: number;
 };
@@ -20,8 +34,14 @@ const STORAGE_KEY = 'ledgerview.favorites.v1';
 
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
-export function FavoritesProvider({ children }: { children: React.ReactNode }) {
-  const [favoritesMap, setFavoritesMap] = useState<Record<string, FavoriteCoin>>({});
+export function FavoritesProvider({
+  children,
+}: {
+  readonly children: React.ReactNode;
+}) {
+  const [favoritesMap, setFavoritesMap] = useState<
+    Record<string, FavoriteCoin>
+  >({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +65,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo<FavoritesContextValue>(() => {
     const favorites = Object.values(favoritesMap).sort(
-      (a, b) => b.savedAt - a.savedAt
+      (a, b) => b.savedAt - a.savedAt,
     );
 
     return {

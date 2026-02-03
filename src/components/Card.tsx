@@ -1,8 +1,8 @@
+import { useTheme } from '@theme';
 import React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
-import { useTheme } from '../theme';
 
-export default function Card({ style, ...props }: ViewProps) {
+export default function Card({ style, ...props }: Readonly<ViewProps>) {
   const theme = useTheme();
 
   return (

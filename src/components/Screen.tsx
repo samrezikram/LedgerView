@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, ViewProps } from 'react-native';
 import { Edge, SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../theme';
+import { useTheme } from '@theme';
 
 type ScreenProps = ViewProps & {
   padded?: boolean;

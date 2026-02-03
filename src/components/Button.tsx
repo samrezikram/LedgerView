@@ -1,16 +1,16 @@
 import React from 'react';
 import { Pressable, StyleSheet, ViewStyle } from 'react-native';
+import { useTheme } from '@theme';
 import AppText from './AppText';
-import { useTheme } from '../theme';
 
 type ButtonVariant = 'primary' | 'secondary';
 
 type ButtonProps = {
-  label: string;
-  onPress?: () => void;
-  disabled?: boolean;
-  variant?: ButtonVariant;
-  style?: ViewStyle;
+  readonly label: string;
+  readonly onPress?: () => void;
+  readonly disabled?: boolean;
+  readonly variant?: ButtonVariant;
+  readonly style?: ViewStyle;
 };
 
 export default function Button({
@@ -22,6 +22,12 @@ export default function Button({
 }: ButtonProps) {
   const theme = useTheme();
   const isPrimary = variant === 'primary';
+  const backgroundColorWhenEnabled = isPrimary
+    ? theme.colors.primary
+    : theme.colors.surface;
+  const backgroundColor = disabled
+    ? theme.colors.surfaceAlt
+    : backgroundColorWhenEnabled;
 
   return (
     <Pressable
@@ -30,11 +36,7 @@ export default function Button({
       style={({ pressed }) => [
         styles.base,
         {
-          backgroundColor: disabled
-            ? theme.colors.surfaceAlt
-            : isPrimary
-              ? theme.colors.primary
-              : theme.colors.surface,
+          backgroundColor,
           borderColor: isPrimary ? theme.colors.primary : theme.colors.border,
           opacity: pressed ? 0.85 : 1,
         },

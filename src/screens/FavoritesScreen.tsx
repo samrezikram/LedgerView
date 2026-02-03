@@ -1,7 +1,11 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { AppText, Card, IconButton, Screen, TopBar } from '../components';
-import { useCoins, useFavoritesState, useLogout } from '../hooks';
+import { AppText, Card, IconButton, Screen, TopBar } from '@components';
+import { useCoins, useFavoritesState, useLogout } from '@hooks';
+
+function ItemSeparator() {
+  return <View style={styles.separator} />;
+}
 
 export default function FavoritesScreen() {
   const { handleLogout, isAuthBusy } = useLogout();
@@ -13,7 +17,7 @@ export default function FavoritesScreen() {
       data={favorites}
       keyExtractor={item => item.uuid}
       contentContainerStyle={styles.list}
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
+      ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
         <Card style={styles.row}>
           <View style={styles.rowHeader}>
@@ -83,7 +87,7 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingHorizontal: 20,
-    paddingBottom: 24,
+    paddingBottom: 12,
     paddingTop: 12,
   },
   separator: {

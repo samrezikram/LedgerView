@@ -1,14 +1,8 @@
+import { useTheme } from '@theme';
 import React from 'react';
 import { StyleSheet, Text, TextProps } from 'react-native';
-import { useTheme } from '../theme';
 
-type Variant =
-  | 'caption'
-  | 'body'
-  | 'bodyLg'
-  | 'title'
-  | 'headline'
-  | 'display';
+type Variant = 'caption' | 'body' | 'bodyLg' | 'title' | 'headline' | 'display';
 
 type AppTextProps = TextProps & {
   variant?: Variant;
@@ -22,12 +16,15 @@ export default function AppText({
   ...props
 }: AppTextProps) {
   const theme = useTheme();
-  const color =
-    tone === 'muted'
-      ? theme.colors.inkMuted
-      : tone === 'primary'
-        ? theme.colors.primary
-        : theme.colors.ink;
+
+  let color: string;
+  if (tone === 'muted') {
+    color = theme.colors.inkMuted;
+  } else if (tone === 'primary') {
+    color = theme.colors.primary;
+  } else {
+    color = theme.colors.ink;
+  }
 
   return (
     <Text

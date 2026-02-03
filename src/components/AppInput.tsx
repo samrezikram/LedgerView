@@ -6,7 +6,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { useTheme } from '../theme';
+import { useTheme } from '@theme';
 import AppText from './AppText';
 
 type InputVariant = 'outline' | 'filled';

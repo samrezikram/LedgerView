@@ -1,15 +1,15 @@
+import { useTheme } from '@theme';
 import React from 'react';
 import { Pressable, StyleSheet, ViewStyle } from 'react-native';
-import { useTheme } from '../theme';
 import AppText from './AppText';
 
 type IconButtonProps = {
-  icon: string;
-  onPress?: () => void;
-  style?: ViewStyle;
-  active?: boolean;
-  size?: 'sm' | 'md' | 'pill';
-  disabled?: boolean;
+  readonly icon: string;
+  readonly onPress?: () => void;
+  readonly style?: ViewStyle;
+  readonly active?: boolean;
+  readonly size?: 'sm' | 'md' | 'pill';
+  readonly disabled?: boolean;
 };
 
 export default function IconButton({
@@ -35,7 +35,9 @@ export default function IconButton({
           minWidth: isPill ? 72 : dimension,
           paddingHorizontal: isPill ? 12 : 0,
           borderRadius: isPill ? 999 : dimension / 2,
-          backgroundColor: active ? theme.colors.primarySoft : theme.colors.surfaceAlt,
+          backgroundColor: active
+            ? theme.colors.primarySoft
+            : theme.colors.surfaceAlt,
           borderColor: active ? theme.colors.primary : theme.colors.border,
           opacity: disabled ? 0.5 : pressed ? 0.7 : 1,
         },

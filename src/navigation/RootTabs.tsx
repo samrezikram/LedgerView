@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import { AppText } from '../components';
-import FavoritesScreen from '../screens/FavoritesScreen';
-import HomeScreen from '../screens/HomeScreen';
-import { useTheme } from '../theme';
+import { AppText } from '@components';
+import FavoritesScreen from '@screens/FavoritesScreen';
+import HomeScreen from '@screens/HomeScreen';
+import { useTheme } from '@theme';
 
 export type RootTabParamList = {
   Home: undefined;

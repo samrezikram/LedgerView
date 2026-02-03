@@ -1,6 +1,12 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { supabase } from '@lib/supabase';
 import { Session } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 type AuthContextValue = {
   session: Session | null;
@@ -13,7 +19,11 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({
+  children,
+}: {
+  readonly children: React.ReactNode;
+}) {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthBusy, setIsAuthBusy] = useState(false);
@@ -30,7 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, nextSession) => {
         setSession(nextSession);
-      }
+      },
     );
 
     return () => {
@@ -68,7 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsAuthBusy(false);
       },
     }),
-    [session, isLoading, isAuthBusy]
+    [session, isLoading, isAuthBusy],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

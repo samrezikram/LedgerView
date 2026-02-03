@@ -7,11 +7,11 @@
 
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import AppNavigator from './src/navigation/AppNavigator';
-import { AuthProvider } from './src/context/AuthContext';
-import { FavoritesProvider } from './src/context/FavoritesContext';
-import { ThemeProvider } from './src/theme';
-import { assertEnvReady } from './src/lib/env';
+import AppNavigator from '@navigation/AppNavigator';
+import { AuthProvider } from '@context/AuthContext';
+import { FavoritesProvider } from '@context/FavoritesContext';
+import { ThemeProvider } from '@theme';
+import { assertEnvReady } from '@lib/env';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';

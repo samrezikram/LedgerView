@@ -21,7 +21,12 @@ export type CoinStats = {
   total24hVolume: string;
 };
 
-export type CoinOrderBy = 'price' | 'marketCap' | '24hVolume' | 'change' | 'listedAt';
+export type CoinOrderBy =
+  | 'price'
+  | 'marketCap'
+  | '24hVolume'
+  | 'change'
+  | 'listedAt';
 export type OrderDirection = 'asc' | 'desc';
 
 type CoinResponse = {
@@ -41,10 +46,11 @@ export async function fetchCoins(params: {
   orderDirection?: OrderDirection;
 }) {
   const query = new URLSearchParams();
-  query.set('limit', String(params.limit));
-  query.set('offset', String(params.offset));
-  if (params.orderBy) query.set('orderBy', params.orderBy);
-  if (params.orderDirection) query.set('orderDirection', params.orderDirection);
+  query.append('limit', String(params.limit));
+  query.append('offset', String(params.offset));
+  if (params.orderBy) query.append('orderBy', params.orderBy);
+  if (params.orderDirection)
+    query.append('orderDirection', params.orderDirection);
 
   const response = await fetch(`${BASE_URL}/coins?${query.toString()}`, {
     headers: {

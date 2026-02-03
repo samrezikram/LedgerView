@@ -1,6 +1,6 @@
-import { Alert } from 'react-native';
 import { useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { Alert } from 'react-native';
+import { useAuth } from '@context/AuthContext';
 
 export function useLogout() {
   const { signOut, isAuthBusy } = useAuth();
@@ -9,7 +9,7 @@ export function useLogout() {
     if (isAuthBusy) return;
     Alert.alert('Sign out', 'Are you sure you want to log out?', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Log out', style: 'destructive', onPress: signOut },
+      { text: 'Log out', style: 'destructive', onPress: () => void signOut() },
     ]);
   }, [isAuthBusy, signOut]);
 

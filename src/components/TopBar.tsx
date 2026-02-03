@@ -1,13 +1,13 @@
+import { useTheme } from '@theme';
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { useTheme } from '../theme';
 import AppText from './AppText';
 
 type TopBarProps = {
-  title: string;
-  subtitle?: string;
-  rightAction?: React.ReactNode;
-  style?: ViewStyle;
+  readonly title: string;
+  readonly subtitle?: string;
+  readonly rightAction?: React.ReactNode;
+  readonly style?: ViewStyle;
 };
 
 export default function TopBar({
@@ -19,7 +19,9 @@ export default function TopBar({
   const theme = useTheme();
 
   return (
-    <View style={[styles.container, { borderColor: theme.colors.border }, style]}>
+    <View
+      style={[styles.container, { borderColor: theme.colors.border }, style]}
+    >
       <View style={styles.titleBlock}>
         <AppText variant="title">{title}</AppText>
         {subtitle ? (

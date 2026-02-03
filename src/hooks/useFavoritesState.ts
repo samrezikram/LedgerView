@@ -1,4 +1,4 @@
-import { useFavorites } from '../context/FavoritesContext';
+import { useFavorites } from '@context/FavoritesContext';
 
 export function useFavoritesState() {
   const { favorites, isLoading, isFavorite, toggleFavorite } = useFavorites();

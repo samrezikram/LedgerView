@@ -1,13 +1,13 @@
+import { useTheme } from '@theme';
 import React from 'react';
 import { Pressable, StyleSheet, ViewStyle } from 'react-native';
-import { useTheme } from '../theme';
 import AppText from './AppText';
 
 type PillButtonProps = {
-  label: string;
-  selected?: boolean;
-  onPress?: () => void;
-  style?: ViewStyle;
+  readonly label: string;
+  readonly selected?: boolean;
+  readonly onPress?: () => void;
+  readonly style?: ViewStyle;
 };
 
 export default function PillButton({
