@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { AppText, Screen } from '@components';
+import { AppText, Screen, ToastStack } from '@components';
 import { useAuth } from '@context/AuthContext';
 import LoginScreen from '@auth/LoginScreen';
 import RegisterScreen from '@auth/RegisterScreen';
@@ -50,6 +50,7 @@ export default function AppNavigator() {
           </AppText>
         </View>
       ) : null}
+      <ToastStack />
     </View>
   );
 }

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { AppInput, AppText, Button, Card, Screen } from '@components';
 import { useAuth } from '@context/AuthContext';
+import { useNotifications } from '@context/NotificationContext';
 import { envStatus, isEnvReady } from '@lib/env';
 import { AuthStackParamList } from '@navigation/AppNavigator';
 import { useTheme } from '@theme';
@@ -11,6 +12,7 @@ type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
 export default function LoginScreen({ navigation }: Readonly<Props>) {
   const { signIn } = useAuth();
+  const { notify } = useNotifications();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -28,6 +30,7 @@ export default function LoginScreen({ navigation }: Readonly<Props>) {
     setIsSubmitting(false);
     if (result.error) {
       setError(result.error);
+      notify(result.error, 'error');
     }
   };
 

@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Coin, CoinOrderBy, fetchCoins, OrderDirection } from '@lib/coinranking';
+import { useNotifications } from '@context/NotificationContext';
 
 const PAGE_LIMIT = 25;
 
 export function useCoins() {
+  const { notify } = useNotifications();
   const [coins, setCoins] = useState<Coin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -38,6 +40,7 @@ export function useCoins() {
             ? err.message
             : 'Unable to load coins. Check your connection.'
         );
+        notify('Unable to load coins. Check your connection.', 'error');
       } finally {
         setIsLoading(false);
         setIsLoadingMore(false);

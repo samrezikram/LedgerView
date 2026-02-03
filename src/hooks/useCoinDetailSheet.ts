@@ -2,12 +2,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { RefObject } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Coin, CoinHistoryPoint, fetchCoinHistory } from '@lib/coinranking';
+import { useNotifications } from '@context/NotificationContext';
 
 type UseCoinDetailSheetParams = {
   sheetRef: RefObject<BottomSheetModal | null>;
 };
 
 export function useCoinDetailSheet({ sheetRef }: UseCoinDetailSheetParams) {
+  const { notify } = useNotifications();
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
   const [history, setHistory] = useState<CoinHistoryPoint[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +52,7 @@ export function useCoinDetailSheet({ sheetRef }: UseCoinDetailSheetParams) {
             ? err.message
             : 'Unable to load history. Try again.'
         );
+        notify('Unable to load price history. Try again.', 'error');
       } finally {
         if (isActive) setIsLoading(false);
       }

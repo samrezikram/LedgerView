@@ -11,6 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from '@navigation/AppNavigator';
 import { AuthProvider } from '@context/AuthContext';
 import { FavoritesProvider } from '@context/FavoritesContext';
+import { NotificationProvider } from '@context/NotificationContext';
 import { ThemeProvider } from '@theme';
 import { assertEnvReady } from '@lib/env';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -26,9 +27,11 @@ function App() {
         <ThemeProvider>
           <AuthProvider>
             <FavoritesProvider>
-              <BottomSheetModalProvider>
-                <AppContent />
-              </BottomSheetModalProvider>
+              <NotificationProvider>
+                <BottomSheetModalProvider>
+                  <AppContent />
+                </BottomSheetModalProvider>
+              </NotificationProvider>
             </FavoritesProvider>
           </AuthProvider>
         </ThemeProvider>
