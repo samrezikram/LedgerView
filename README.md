@@ -4,7 +4,7 @@ Professional SaaS-style crypto dashboard powered by CoinRanking and Supabase Aut
 
 ## Screenshots
 
-Add your screenshots to `docs/screenshots/` and update the filenames below.
+Screenshots are in `docs/screenshots/`.
 
 | Home                                | Favorites                               | Detail                                  |
 | ----------------------------------- | --------------------------------------- | --------------------------------------- |

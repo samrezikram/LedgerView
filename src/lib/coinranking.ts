@@ -1,4 +1,4 @@
-import { env } from './env';
+import { apiConfig, env } from '@lib/env';
 
 export type Coin = {
   uuid: string;
@@ -52,7 +52,7 @@ type CoinHistoryApiResponse = {
   data: CoinHistoryResponse;
 };
 
-const BASE_URL = 'https://api.coinranking.com/v2';
+const BASE_URL = apiConfig.coinrankingBaseUrl;
 
 export async function fetchCoins(params: {
   limit: number;

@@ -6,6 +6,10 @@ export const env = {
   coinrankingApiKey: Config.COINRANKING_API_KEY ?? '',
 };
 
+export const apiConfig = {
+  coinrankingBaseUrl: 'https://api.coinranking.com/v2',
+};
+
 export const envStatus = {
   missing: [
     !env.supabaseUrl && 'SUPABASE_URL',
