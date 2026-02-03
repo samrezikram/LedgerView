@@ -38,7 +38,7 @@ export default function RegisterScreen({ navigation }: Props) {
   };
 
   return (
-    <Screen padded={false}>
+    <Screen padded={false} edges={['top', 'left', 'right', 'bottom']}>
       <KeyboardAvoidingView
         behavior={Platform.select({ ios: 'padding', android: undefined })}
         style={styles.flex}

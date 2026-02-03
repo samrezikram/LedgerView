@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
+import { AppText } from '../components';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import HomeScreen from '../screens/HomeScreen';
 import { useTheme } from '../theme';
-import { AppText } from '../components';
 
 export type RootTabParamList = {
   Home: undefined;
@@ -37,7 +37,10 @@ export default function RootTabs() {
         ),
         tabBarStyle: [
           styles.tabBar,
-          { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border },
+          {
+            backgroundColor: theme.colors.surface,
+            borderTopColor: theme.colors.border,
+          },
         ],
       })}
     >
