@@ -1,10 +1,11 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppInput, AppText, Button, Card, Screen } from '../../components';
 import { useAuth } from '../../context/AuthContext';
 import { envStatus, isEnvReady } from '../../lib/env';
 import { AuthStackParamList } from '../../navigation/AppNavigator';
+import { useTheme } from '../../theme';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
@@ -14,6 +15,7 @@ export default function LoginScreen({ navigation }: Props) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const theme = useTheme();
 
   const handleLogin = async () => {
     if (!email || !password) {
