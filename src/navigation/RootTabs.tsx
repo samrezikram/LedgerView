@@ -1,9 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { Platform, StyleSheet, Text } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import HomeScreen from '../screens/HomeScreen';
 import { useTheme } from '../theme';
+import { AppText } from '../components';
 
 export type RootTabParamList = {
   Home: undefined;
@@ -34,7 +35,7 @@ export default function RootTabs() {
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.inkMuted,
         tabBarIcon: ({ focused }) => (
-          <Text
+          <AppText
             style={[
               styles.tabIcon,
               { color: focused ? theme.colors.primary : theme.colors.inkMuted },
@@ -42,7 +43,7 @@ export default function RootTabs() {
             ]}
           >
             {route.name === 'Home' ? 'H' : 'F'}
-          </Text>
+          </AppText>
         ),
         tabBarStyle: [
           styles.tabBar,

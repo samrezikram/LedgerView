@@ -1,6 +1,7 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, ViewStyle } from 'react-native';
 import { useTheme } from '../theme';
+import AppText from './AppText';
 
 type IconButtonProps = {
   icon: string;
@@ -24,7 +25,9 @@ export default function IconButton({ icon, onPress, style }: IconButtonProps) {
         style,
       ]}
     >
-      <Text style={[styles.icon, { color: theme.colors.ink }]}>{icon}</Text>
+      <AppText style={[styles.icon, { color: theme.colors.ink }]}>
+        {icon}
+      </AppText>
     </Pressable>
   );
 }
