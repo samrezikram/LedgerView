@@ -29,7 +29,7 @@ const ORDER_OPTIONS: { label: string; value: CoinOrderBy }[] = [
 
 export default function HomeScreen() {
   const theme = useTheme();
-  const { signOut } = useAuth();
+  const { signOut, isAuthBusy } = useAuth();
   const { toggleFavorite, isFavorite } = useFavorites();
   const [coins, setCoins] = useState<Coin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -132,6 +132,7 @@ export default function HomeScreen() {
               ])
             }
             size="pill"
+            disabled={isAuthBusy}
           />
         }
       />

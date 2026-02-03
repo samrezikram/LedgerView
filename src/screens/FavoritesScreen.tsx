@@ -7,7 +7,7 @@ import { useTheme } from '../theme';
 
 export default function FavoritesScreen() {
   const theme = useTheme();
-  const { signOut } = useAuth();
+  const { signOut, isAuthBusy } = useAuth();
   const { favorites, isLoading, toggleFavorite } = useFavorites();
   const formatPrice = useCallback((value: string) => {
     const parsed = Number(value);
@@ -29,6 +29,7 @@ export default function FavoritesScreen() {
               ])
             }
             size="pill"
+            disabled={isAuthBusy}
           />
         }
       />

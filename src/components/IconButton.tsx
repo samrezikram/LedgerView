@@ -9,6 +9,7 @@ type IconButtonProps = {
   style?: ViewStyle;
   active?: boolean;
   size?: 'sm' | 'md' | 'pill';
+  disabled?: boolean;
 };
 
 export default function IconButton({
@@ -17,6 +18,7 @@ export default function IconButton({
   style,
   active = false,
   size = 'md',
+  disabled = false,
 }: IconButtonProps) {
   const theme = useTheme();
   const isPill = size === 'pill';
@@ -25,6 +27,7 @@ export default function IconButton({
   return (
     <Pressable
       onPress={onPress}
+      disabled={disabled}
       style={({ pressed }) => [
         styles.base,
         {
@@ -34,7 +37,7 @@ export default function IconButton({
           borderRadius: isPill ? 999 : dimension / 2,
           backgroundColor: active ? theme.colors.primarySoft : theme.colors.surfaceAlt,
           borderColor: active ? theme.colors.primary : theme.colors.border,
-          opacity: pressed ? 0.7 : 1,
+          opacity: disabled ? 0.5 : pressed ? 0.7 : 1,
         },
         style,
       ]}
