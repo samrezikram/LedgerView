@@ -3,18 +3,27 @@ import {
   ActivityIndicator,
   FlatList,
   ListRenderItemInfo,
+  Pressable,
   StyleSheet,
   View,
 } from 'react-native';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   AppText,
   Card,
+  CoinDetailSheet,
   IconButton,
   PillButton,
   Screen,
   TopBar,
 } from '@components';
-import { useCoins, useFavoritesState, useFormatters, useLogout } from '@hooks';
+import {
+  useCoinDetailSheet,
+  useCoins,
+  useFavoritesState,
+  useFormatters,
+  useLogout,
+} from '@hooks';
 import { Coin, CoinOrderBy, OrderDirection } from '@lib/coinranking';
 import { useTheme } from '@theme';
 
@@ -32,6 +41,15 @@ export default function HomeScreen() {
   const theme = useTheme();
   const { handleLogout, isAuthBusy } = useLogout();
   const { toggleFavorite, isFavorite } = useFavoritesState();
+  const sheetRef = React.useRef<BottomSheetModal>(null);
+  const {
+    selectedCoin,
+    history,
+    isLoading: isHistoryLoading,
+    error: historyError,
+    highLow,
+    openCoin,
+  } = useCoinDetailSheet({ sheetRef });
   const {
     coins,
     isLoading,
@@ -46,25 +64,30 @@ export default function HomeScreen() {
   const { formatPrice } = useFormatters();
 
   const renderItem = ({ item }: ListRenderItemInfo<Coin>) => (
-    <Card style={styles.row}>
-      <View style={styles.rowHeader}>
-        <AppText variant="bodyLg">{item.name}</AppText>
-        <View style={styles.rowHeaderRight}>
-          <AppText tone="muted">#{item.rank}</AppText>
-          <IconButton
-            icon={isFavorite(item.uuid) ? 'Saved' : 'Save'}
-            active={isFavorite(item.uuid)}
-            size="pill"
-            onPress={() => toggleFavorite(item)}
-            style={styles.favoriteButton}
-          />
+    <Pressable onPress={() => openCoin(item)}>
+      <Card style={styles.row}>
+        <View style={styles.rowHeader}>
+          <AppText variant="bodyLg">{item.name}</AppText>
+          <View style={styles.rowHeaderRight}>
+            <AppText tone="muted">#{item.rank}</AppText>
+            <IconButton
+              icon={isFavorite(item.uuid) ? 'Saved' : 'Save'}
+              active={isFavorite(item.uuid)}
+              size="pill"
+              onPress={event => {
+                event.stopPropagation();
+                toggleFavorite(item);
+              }}
+              style={styles.favoriteButton}
+            />
+          </View>
         </View>
-      </View>
-      <View style={styles.rowFooter}>
-        <AppText tone="muted">{item.symbol}</AppText>
-        <AppText variant="bodyLg">${formatPrice(item.price)}</AppText>
-      </View>
-    </Card>
+        <View style={styles.rowFooter}>
+          <AppText tone="muted">{item.symbol}</AppText>
+          <AppText variant="bodyLg">${formatPrice(item.price)}</AppText>
+        </View>
+      </Card>
+    </Pressable>
   );
 
   return (
@@ -135,6 +158,15 @@ export default function HomeScreen() {
           }
         />
       )}
+      <CoinDetailSheet
+        sheetRef={sheetRef}
+        coin={selectedCoin}
+        history={history}
+        isLoading={isHistoryLoading}
+        error={historyError}
+        high={formatPrice(String(highLow.high))}
+        low={formatPrice(String(highLow.low))}
+      />
     </Screen>
   );
 }

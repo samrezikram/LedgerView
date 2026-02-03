@@ -1,24 +1,24 @@
-import React, { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { AppText, Card } from '@components';
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
-import { VictoryChart, VictoryLine } from 'victory-native';
-import { AppText, Card } from '@components';
+import { useFormatters } from '@hooks';
 import { Coin, CoinHistoryPoint } from '@lib/coinranking';
 import { useTheme } from '@theme';
-import { useFormatters } from '@hooks';
+import React, { useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { VictoryChart, VictoryLine } from 'victory-native';
 
 type CoinDetailSheetProps = {
-  sheetRef: React.RefObject<BottomSheetModal>;
-  coin: Coin | null;
-  history: CoinHistoryPoint[];
-  isLoading: boolean;
-  error: string;
-  high: string;
-  low: string;
+  readonly sheetRef: React.RefObject<BottomSheetModal>;
+  readonly coin: Coin | null;
+  readonly history: CoinHistoryPoint[];
+  readonly isLoading: boolean;
+  readonly error: string;
+  readonly high: string;
+  readonly low: string;
 };
 
 export default function CoinDetailSheet({
@@ -32,7 +32,7 @@ export default function CoinDetailSheet({
 }: CoinDetailSheetProps) {
   const theme = useTheme();
   const { formatPrice } = useFormatters();
-  const snapPoints = useMemo(() => ['40%', '72%'], []);
+  const snapPoints = useMemo(() => ['55%', '90%'], []);
 
   const chartData = useMemo(
     () =>
@@ -40,7 +40,7 @@ export default function CoinDetailSheet({
         x: new Date(point.timestamp * 1000),
         y: Number(point.price),
       })),
-    [history]
+    [history],
   );
 
   if (!coin) return null;
@@ -53,6 +53,7 @@ export default function CoinDetailSheet({
     <BottomSheetModal
       ref={sheetRef}
       snapPoints={snapPoints}
+      index={1}
       enablePanDownToClose
       backdropComponent={props => (
         <BottomSheetBackdrop
@@ -106,8 +107,13 @@ export default function CoinDetailSheet({
           ) : null}
           {isLoading ? (
             <AppText tone="muted">Loading chart...</AppText>
+          ) : history.length === 0 ? (
+            <AppText tone="muted">No history available.</AppText>
           ) : (
-            <VictoryChart padding={{ top: 16, bottom: 24, left: 40, right: 16 }}>
+            <VictoryChart
+              height={180}
+              padding={{ top: 16, bottom: 24, left: 48, right: 16 }}
+            >
               <VictoryLine
                 data={chartData}
                 style={{ data: { stroke: theme.colors.primary } }}
@@ -142,6 +148,7 @@ const styles = StyleSheet.create({
   },
   chartCard: {
     marginTop: 8,
+    overflow: 'hidden',
   },
   error: {
     marginTop: 8,
