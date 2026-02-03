@@ -3,8 +3,10 @@ import { Alert, FlatList, StyleSheet, View } from 'react-native';
 import { AppText, Card, IconButton, TopBar } from '../components';
 import { useAuth } from '../context/AuthContext';
 import { useFavorites } from '../context/FavoritesContext';
+import { useTheme } from '../theme';
 
 export default function FavoritesScreen() {
+  const theme = useTheme();
   const { signOut } = useAuth();
   const { favorites, isLoading, toggleFavorite } = useFavorites();
   const formatPrice = useCallback((value: string) => {
@@ -13,7 +15,7 @@ export default function FavoritesScreen() {
   }, []);
 
   return (
-    <View style={styles.flex}>
+    <View style={[styles.flex, { backgroundColor: theme.colors.canvas }]}>
       <TopBar
         title="Favorites"
         subtitle="Your saved coins in one place."

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -38,8 +38,7 @@ export default function HomeScreen() {
   const [offset, setOffset] = useState(0);
   const [total, setTotal] = useState(0);
   const [orderBy, setOrderBy] = useState<CoinOrderBy>('marketCap');
-  const [orderDirection, setOrderDirection] =
-    useState<OrderDirection>('desc');
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>('desc');
 
   const loadCoins = useCallback(
     async (nextOffset: number, append: boolean) => {
@@ -63,14 +62,14 @@ export default function HomeScreen() {
         setError(
           err instanceof Error
             ? err.message
-            : 'Unable to load coins. Check your connection.'
+            : 'Unable to load coins. Check your connection.',
         );
       } finally {
         setIsLoading(false);
         setIsLoadingMore(false);
       }
     },
-    [orderBy, orderDirection]
+    [orderBy, orderDirection],
   );
 
   useEffect(() => {
@@ -119,7 +118,7 @@ export default function HomeScreen() {
   );
 
   return (
-    <View style={styles.flex}>
+    <View style={[styles.flex, { backgroundColor: theme.colors.canvas }]}>
       <TopBar
         title="Market Overview"
         subtitle="Live crypto listings powered by CoinRanking."
@@ -205,6 +204,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 12,
     paddingBottom: 8,
+    backgroundColor: 'transparent',
   },
   filterLabel: {
     marginBottom: 8,
