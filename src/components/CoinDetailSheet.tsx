@@ -43,11 +43,11 @@ export default function CoinDetailSheet({
     [history]
   );
 
+  if (!coin) return null;
+
   const safePrice = formatPrice(coin.price);
   const highLabel = high === '--' ? '--' : `$${high}`;
   const lowLabel = low === '--' ? '--' : `$${low}`;
-
-  if (!coin) return null;
 
   return (
     <BottomSheetModal
