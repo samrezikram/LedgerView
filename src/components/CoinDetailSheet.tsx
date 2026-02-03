@@ -43,6 +43,12 @@ export default function CoinDetailSheet({
     [history],
   );
 
+  const formatDate = (value: Date) => {
+    const month = value.getMonth() + 1;
+    const day = value.getDate();
+    return `${month}/${day}`;
+  };
+
   if (!coin) return null;
 
   const safePrice = formatPrice(coin.price);
@@ -112,6 +118,7 @@ export default function CoinDetailSheet({
           {!isLoading && history.length > 0 && (
             <VictoryChart
               height={180}
+              scale={{ x: 'time' }}
               padding={{ top: 16, bottom: 24, left: 48, right: 16 }}
             >
               <VictoryAxis
@@ -121,12 +128,15 @@ export default function CoinDetailSheet({
                   grid: { stroke: theme.colors.border, opacity: 0.5 },
                   tickLabels: { fill: theme.colors.inkMuted, fontSize: 10 },
                 }}
+                tickCount={4}
               />
               <VictoryAxis
                 style={{
                   axis: { stroke: theme.colors.border },
                   tickLabels: { fill: theme.colors.inkMuted, fontSize: 10 },
                 }}
+                tickCount={4}
+                tickFormat={value => formatDate(value as Date)}
               />
               <VictoryLine
                 data={chartData}
