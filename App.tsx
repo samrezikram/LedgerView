@@ -9,6 +9,7 @@ import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from './src/navigation/AppNavigator';
 import { AuthProvider } from './src/context/AuthContext';
+import { FavoritesProvider } from './src/context/FavoritesContext';
 import { ThemeProvider } from './src/theme';
 import { assertEnvReady } from './src/lib/env';
 
@@ -21,7 +22,9 @@ function App() {
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ThemeProvider>
         <AuthProvider>
-          <AppContent />
+          <FavoritesProvider>
+            <AppContent />
+          </FavoritesProvider>
         </AuthProvider>
       </ThemeProvider>
     </SafeAreaProvider>

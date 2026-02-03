@@ -7,10 +7,19 @@ type IconButtonProps = {
   icon: string;
   onPress?: () => void;
   style?: ViewStyle;
+  active?: boolean;
+  size?: 'sm' | 'md';
 };
 
-export default function IconButton({ icon, onPress, style }: IconButtonProps) {
+export default function IconButton({
+  icon,
+  onPress,
+  style,
+  active = false,
+  size = 'md',
+}: IconButtonProps) {
   const theme = useTheme();
+  const dimension = size === 'sm' ? 30 : 36;
 
   return (
     <Pressable
@@ -18,14 +27,22 @@ export default function IconButton({ icon, onPress, style }: IconButtonProps) {
       style={({ pressed }) => [
         styles.base,
         {
-          backgroundColor: theme.colors.surfaceAlt,
-          borderColor: theme.colors.border,
+          height: dimension,
+          width: dimension,
+          borderRadius: dimension / 2,
+          backgroundColor: active ? theme.colors.primarySoft : theme.colors.surfaceAlt,
+          borderColor: active ? theme.colors.primary : theme.colors.border,
           opacity: pressed ? 0.7 : 1,
         },
         style,
       ]}
     >
-      <AppText style={[styles.icon, { color: theme.colors.ink }]}>
+      <AppText
+        style={[
+          styles.icon,
+          { color: active ? theme.colors.primary : theme.colors.ink },
+        ]}
+      >
         {icon}
       </AppText>
     </Pressable>
@@ -34,15 +51,13 @@ export default function IconButton({ icon, onPress, style }: IconButtonProps) {
 
 const styles = StyleSheet.create({
   base: {
-    height: 36,
-    width: 36,
-    borderRadius: 18,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   icon: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '700',
+    letterSpacing: 0.4,
   },
 });
