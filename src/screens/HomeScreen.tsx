@@ -65,10 +65,23 @@ export default function HomeScreen() {
   const { formatPrice } = useFormatters();
 
   const renderItem = ({ item }: ListRenderItemInfo<Coin>) => (
-    <Pressable onPress={() => openCoin(item)}>
+    <Pressable
+      onPress={() => openCoin(item)}
+      style={({ pressed }) => [
+        styles.rowPressable,
+        pressed && styles.rowPressed,
+      ]}
+    >
       <Card style={styles.row}>
         <View style={styles.rowHeader}>
-          <AppText variant="bodyLg">{item.name}</AppText>
+          <AppText
+            variant="bodyLg"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={styles.coinName}
+          >
+            {item.name}
+          </AppText>
           <View style={styles.rowHeaderRight}>
             <AppText tone="muted">#{item.rank}</AppText>
             <IconButton
@@ -214,6 +227,12 @@ const styles = StyleSheet.create({
   row: {
     padding: 16,
   },
+  rowPressable: {
+    borderRadius: 16,
+  },
+  rowPressed: {
+    opacity: 0.85,
+  },
   rowHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -223,6 +242,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+  },
+  coinName: {
+    flex: 1,
+    marginRight: 12,
   },
   favoriteButton: {
     marginLeft: 8,

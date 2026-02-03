@@ -41,10 +41,21 @@ export default function FavoritesScreen() {
       contentContainerStyle={styles.list}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
-        <Pressable onPress={() => openCoin(item)}>
+        <Pressable
+          onPress={() => openCoin(item)}
+          style={({ pressed }) => [
+            styles.rowPressable,
+            pressed && styles.rowPressed,
+          ]}
+        >
           <Card style={styles.row}>
             <View style={styles.rowHeader}>
-              <AppText variant="bodyLg" style={styles.coinName}>
+              <AppText
+                variant="bodyLg"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={styles.coinName}
+              >
                 {item.name}
               </AppText>
               <IconButton
@@ -131,6 +142,12 @@ const styles = StyleSheet.create({
   },
   row: {
     padding: 16,
+  },
+  rowPressable: {
+    borderRadius: 16,
+  },
+  rowPressed: {
+    opacity: 0.85,
   },
   rowHeader: {
     flexDirection: 'row',
