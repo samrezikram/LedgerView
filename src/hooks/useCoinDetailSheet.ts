@@ -4,7 +4,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Coin, CoinHistoryPoint, fetchCoinHistory } from '@lib/coinranking';
 
 type UseCoinDetailSheetParams = {
-  sheetRef: RefObject<BottomSheetModal>;
+  sheetRef: RefObject<BottomSheetModal | null>;
 };
 
 export function useCoinDetailSheet({ sheetRef }: UseCoinDetailSheetParams) {
