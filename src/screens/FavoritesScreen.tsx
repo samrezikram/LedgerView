@@ -8,6 +8,49 @@ export default function FavoritesScreen() {
   const { favorites, isLoading, toggleFavorite } = useFavoritesState();
   const { formatPrice } = useCoins();
 
+  let content = (
+    <FlatList
+      data={favorites}
+      keyExtractor={item => item.uuid}
+      contentContainerStyle={styles.list}
+      ItemSeparatorComponent={() => <View style={styles.separator} />}
+      renderItem={({ item }) => (
+        <Card style={styles.row}>
+          <View style={styles.rowHeader}>
+            <AppText variant="bodyLg" style={styles.coinName}>
+              {item.name}
+            </AppText>
+            <IconButton
+              icon="Remove"
+              size="pill"
+              onPress={() => toggleFavorite(item)}
+            />
+          </View>
+          <View style={styles.rowFooter}>
+            <AppText tone="muted">{item.symbol}</AppText>
+            <AppText variant="bodyLg">${formatPrice(item.price)}</AppText>
+          </View>
+        </Card>
+      )}
+    />
+  );
+
+  if (isLoading) {
+    content = (
+      <View style={styles.loading}>
+        <AppText tone="muted">Loading favorites...</AppText>
+      </View>
+    );
+  } else if (favorites.length === 0) {
+    content = (
+      <Card style={styles.emptyCard}>
+        <AppText tone="muted">
+          No favorites yet. Add coins from the Home tab.
+        </AppText>
+      </Card>
+    );
+  }
+
   return (
     <Screen padded={false} style={styles.flex}>
       <TopBar
@@ -22,42 +65,7 @@ export default function FavoritesScreen() {
           />
         }
       />
-      {isLoading ? (
-        <View style={styles.loading}>
-          <AppText tone="muted">Loading favorites...</AppText>
-        </View>
-      ) : favorites.length === 0 ? (
-        <Card style={styles.emptyCard}>
-          <AppText tone="muted">
-            No favorites yet. Add coins from the Home tab.
-          </AppText>
-        </Card>
-      ) : (
-        <FlatList
-          data={favorites}
-          keyExtractor={item => item.uuid}
-          contentContainerStyle={styles.list}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-          renderItem={({ item }) => (
-            <Card style={styles.row}>
-              <View style={styles.rowHeader}>
-                <AppText variant="bodyLg" style={styles.coinName}>
-                  {item.name}
-                </AppText>
-                <IconButton
-                  icon="Remove"
-                  size="pill"
-                  onPress={() => toggleFavorite(item)}
-                />
-              </View>
-              <View style={styles.rowFooter}>
-                <AppText tone="muted">{item.symbol}</AppText>
-                <AppText variant="bodyLg">${formatPrice(item.price)}</AppText>
-              </View>
-            </Card>
-          )}
-        />
-      )}
+      {content}
     </Screen>
   );
 }
