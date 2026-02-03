@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AppText from './AppText';
 import { useTheme } from '../theme';
 
@@ -19,17 +20,21 @@ export default function TopBar({
   const theme = useTheme();
 
   return (
-    <View style={[styles.container, { borderColor: theme.colors.border }, style]}>
-      <View style={styles.titleBlock}>
-        <AppText variant="title">{title}</AppText>
-        {subtitle ? (
-          <AppText tone="muted" style={styles.subtitle}>
-            {subtitle}
-          </AppText>
-        ) : null}
+    <SafeAreaView style={{ backgroundColor: theme.colors.canvas }}>
+      <View
+        style={[styles.container, { borderColor: theme.colors.border }, style]}
+      >
+        <View style={styles.titleBlock}>
+          <AppText variant="title">{title}</AppText>
+          {subtitle ? (
+            <AppText tone="muted" style={styles.subtitle}>
+              {subtitle}
+            </AppText>
+          ) : null}
+        </View>
+        <View>{rightAction}</View>
       </View>
-      <View>{rightAction}</View>
-    </View>
+    </SafeAreaView>
   );
 }
 

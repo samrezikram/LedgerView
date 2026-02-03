@@ -48,8 +48,12 @@ export default function FavoritesScreen() {
           renderItem={({ item }) => (
             <Card style={styles.row}>
               <View style={styles.rowHeader}>
-                <AppText variant="bodyLg">{item.name}</AppText>
-                <AppText tone="muted">#{item.rank}</AppText>
+                <AppText variant="bodyLg" style={styles.coinName}>
+                  {item.name}
+                </AppText>
+                <AppText tone="muted" style={styles.rank}>
+                  #{item.rank}
+                </AppText>
               </View>
               <View style={styles.rowFooter}>
                 <AppText tone="muted">{item.symbol}</AppText>
@@ -89,6 +93,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  coinName: {
+    flex: 1,
+    marginRight: 12,
+  },
+  rank: {
+    minWidth: 44,
+    textAlign: 'right',
   },
   rowFooter: {
     marginTop: 8,

@@ -95,9 +95,13 @@ export default function HomeScreen() {
   const renderItem = ({ item }: ListRenderItemInfo<Coin>) => (
     <Card style={styles.row}>
       <View style={styles.rowHeader}>
-        <AppText variant="bodyLg">{item.name}</AppText>
+        <AppText variant="bodyLg" style={styles.coinName}>
+          {item.name}
+        </AppText>
         <View style={styles.rowHeaderRight}>
-          <AppText tone="muted">#{item.rank}</AppText>
+          <AppText tone="muted" style={styles.rank}>
+            #{item.rank}
+          </AppText>
           <IconButton
             icon={isFavorite(item.uuid) ? 'FAV' : 'ADD'}
             active={isFavorite(item.uuid)}
@@ -236,10 +240,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  coinName: {
+    flex: 1,
+    marginRight: 12,
+  },
   rowHeaderRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 6,
+  },
+  rank: {
+    minWidth: 44,
+    textAlign: 'right',
   },
   favoriteButton: {
     marginLeft: 8,
