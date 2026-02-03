@@ -32,7 +32,7 @@ export default function TopBar({
             </AppText>
           ) : null}
         </View>
-        <View>{rightAction}</View>
+        <View style={styles.rightAction}>{rightAction}</View>
       </View>
     </SafeAreaView>
   );
@@ -46,12 +46,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   titleBlock: {
     flex: 1,
   },
   subtitle: {
     marginTop: 4,
+  },
+  rightAction: {
+    marginTop: 2,
   },
 });
