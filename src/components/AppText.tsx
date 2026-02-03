@@ -2,7 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, TextProps } from 'react-native';
 import { useTheme } from '../theme';
 
-type Variant = 'caption' | 'body' | 'bodyLg' | 'title' | 'headline';
+type Variant =
+  | 'caption'
+  | 'body'
+  | 'bodyLg'
+  | 'title'
+  | 'headline'
+  | 'display';
 
 type AppTextProps = TextProps & {
   variant?: Variant;
@@ -56,5 +62,10 @@ const styles = StyleSheet.create({
   headline: {
     fontSize: 24,
     fontWeight: '700',
+  },
+  display: {
+    fontSize: 32,
+    fontWeight: '700',
+    letterSpacing: 0.4,
   },
 });

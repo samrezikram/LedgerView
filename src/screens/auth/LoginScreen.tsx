@@ -1,0 +1,168 @@
+import React, { useState } from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AppText, Button, Card, Screen } from '../../components';
+import { useAuth } from '../../context/AuthContext';
+import { envStatus, isEnvReady } from '../../lib/env';
+import { useTheme } from '../../theme';
+import { AuthStackParamList } from '../../navigation/AppNavigator';
+
+type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
+
+export default function LoginScreen({ navigation }: Props) {
+  const theme = useTheme();
+  const { signIn } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      setError('Please enter your email and password.');
+      return;
+    }
+    setError('');
+    setIsSubmitting(true);
+    const result = await signIn(email.trim(), password);
+    setIsSubmitting(false);
+    if (result.error) {
+      setError(result.error);
+    }
+  };
+
+  return (
+    <Screen padded={false}>
+      <KeyboardAvoidingView
+        behavior={Platform.select({ ios: 'padding', android: undefined })}
+        style={styles.flex}
+      >
+        <View style={[styles.header, { backgroundColor: theme.colors.canvas }]}>
+          <AppText variant="display">LedgerView</AppText>
+          <AppText variant="bodyLg" tone="muted" style={styles.headerSubtitle}>
+            Sign in to track the market in real time.
+          </AppText>
+        </View>
+        <Card style={styles.card}>
+          <AppText variant="title">Welcome back</AppText>
+          <AppText tone="muted" style={styles.subtitle}>
+            Secure access with Supabase authentication.
+          </AppText>
+          {!isEnvReady ? (
+            <AppText tone="primary" style={styles.error}>
+              Missing environment variables: {envStatus.missing.join(', ')}.
+            </AppText>
+          ) : null}
+          <View style={styles.field}>
+            <AppText tone="muted" style={styles.label}>
+              Email
+            </AppText>
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              placeholder="you@company.com"
+              placeholderTextColor={theme.colors.inkMuted}
+              style={[
+                styles.input,
+                {
+                  borderColor: theme.colors.border,
+                  color: theme.colors.ink,
+                  backgroundColor: theme.colors.surface,
+                  fontFamily: theme.typography.families.regular,
+                },
+              ]}
+              value={email}
+              onChangeText={setEmail}
+            />
+          </View>
+          <View style={styles.field}>
+            <AppText tone="muted" style={styles.label}>
+              Password
+            </AppText>
+            <TextInput
+              placeholder="••••••••"
+              placeholderTextColor={theme.colors.inkMuted}
+              secureTextEntry
+              style={[
+                styles.input,
+                {
+                  borderColor: theme.colors.border,
+                  color: theme.colors.ink,
+                  backgroundColor: theme.colors.surface,
+                  fontFamily: theme.typography.families.regular,
+                },
+              ]}
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
+          {error ? (
+            <AppText tone="primary" style={styles.error}>
+              {error}
+            </AppText>
+          ) : null}
+          <Button
+            label={isSubmitting ? 'Signing in...' : 'Sign in'}
+            onPress={handleLogin}
+            disabled={isSubmitting || !isEnvReady}
+            style={styles.primaryButton}
+          />
+          <Button
+            label="Create an account"
+            variant="secondary"
+            onPress={() => navigation.navigate('Register')}
+          />
+        </Card>
+      </KeyboardAvoidingView>
+    </Screen>
+  );
+}
+
+const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
+  header: {
+    paddingTop: 72,
+    paddingHorizontal: 24,
+    paddingBottom: 32,
+  },
+  headerSubtitle: {
+    marginTop: 12,
+  },
+  card: {
+    marginHorizontal: 20,
+    marginTop: -10,
+  },
+  subtitle: {
+    marginTop: 8,
+    marginBottom: 20,
+  },
+  field: {
+    marginBottom: 16,
+  },
+  label: {
+    marginBottom: 8,
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    fontSize: 15,
+  },
+  error: {
+    marginBottom: 12,
+  },
+  primaryButton: {
+    marginTop: 8,
+    marginBottom: 12,
+  },
+});

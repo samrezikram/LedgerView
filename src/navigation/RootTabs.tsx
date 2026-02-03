@@ -1,10 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useCallback } from 'react';
+import { Alert, Platform, StyleSheet } from 'react-native';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import HomeScreen from '../screens/HomeScreen';
 import { useTheme } from '../theme';
-import { AppText } from '../components';
+import { AppText, IconButton } from '../components';
+import { useAuth } from '../context/AuthContext';
 
 export type RootTabParamList = {
   Home: undefined;
@@ -15,6 +16,14 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export default function RootTabs() {
   const theme = useTheme();
+  const { signOut } = useAuth();
+
+  const handleLogout = useCallback(() => {
+    Alert.alert('Sign out', 'Are you sure you want to log out?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Log out', style: 'destructive', onPress: () => signOut() },
+    ]);
+  }, [signOut]);
 
   return (
     <Tab.Navigator
@@ -30,6 +39,9 @@ export default function RootTabs() {
           fontWeight: '700',
           color: theme.colors.ink,
         },
+        headerRight: () => (
+          <IconButton icon="OUT" onPress={handleLogout} />
+        ),
         tabBarShowLabel: true,
         tabBarLabelStyle: styles.tabLabel,
         tabBarActiveTintColor: theme.colors.primary,

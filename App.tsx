@@ -5,10 +5,10 @@
  * @format
  */
 
-import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import RootTabs from './src/navigation/RootTabs';
+import AppNavigator from './src/navigation/AppNavigator';
+import { AuthProvider } from './src/context/AuthContext';
 import { ThemeProvider } from './src/theme';
 
 function App() {
@@ -18,7 +18,9 @@ function App() {
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ThemeProvider>
-        <AppContent />
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );
@@ -26,9 +28,7 @@ function App() {
 
 function AppContent() {
   return (
-    <NavigationContainer>
-      <RootTabs />
-    </NavigationContainer>
+    <AppNavigator />
   );
 }
 
