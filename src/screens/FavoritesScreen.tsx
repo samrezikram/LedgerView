@@ -1,14 +1,13 @@
 import React, { useCallback } from 'react';
-import { Alert, FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { AppText, Card, IconButton, TopBar } from '../components';
-import { useAuth } from '../context/AuthContext';
-import { useFavorites } from '../context/FavoritesContext';
+import { useFavoritesState, useLogout } from '../hooks';
 import { useTheme } from '../theme';
 
 export default function FavoritesScreen() {
   const theme = useTheme();
-  const { signOut, isAuthBusy } = useAuth();
-  const { favorites, isLoading, toggleFavorite } = useFavorites();
+  const { handleLogout, isAuthBusy } = useLogout();
+  const { favorites, isLoading, toggleFavorite } = useFavoritesState();
   const formatPrice = useCallback((value: string) => {
     const parsed = Number(value);
     return Number.isNaN(parsed) ? '--' : parsed.toFixed(2);
@@ -22,12 +21,7 @@ export default function FavoritesScreen() {
         rightAction={
           <IconButton
             icon="Logout"
-            onPress={() =>
-              Alert.alert('Sign out', 'Are you sure you want to log out?', [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'Log out', style: 'destructive', onPress: signOut },
-              ])
-            }
+            onPress={handleLogout}
             size="pill"
             disabled={isAuthBusy}
           />

@@ -1,24 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   ListRenderItemInfo,
   StyleSheet,
   View,
 } from 'react-native';
 import { AppText, Card, IconButton, PillButton, TopBar } from '../components';
-import { useAuth } from '../context/AuthContext';
-import { useFavorites } from '../context/FavoritesContext';
-import {
-  Coin,
-  CoinOrderBy,
-  fetchCoins,
-  OrderDirection,
-} from '../lib/coinranking';
+import { useCoins, useFavoritesState, useLogout } from '../hooks';
+import { Coin, CoinOrderBy, OrderDirection } from '../lib/coinranking';
 import { useTheme } from '../theme';
 
-const PAGE_LIMIT = 25;
 const ORDER_OPTIONS: { label: string; value: CoinOrderBy }[] = [
   { label: 'Price', value: 'price' },
   { label: 'MCap', value: 'marketCap' },
@@ -29,61 +21,19 @@ const ORDER_OPTIONS: { label: string; value: CoinOrderBy }[] = [
 
 export default function HomeScreen() {
   const theme = useTheme();
-  const { signOut, isAuthBusy } = useAuth();
-  const { toggleFavorite, isFavorite } = useFavorites();
-  const [coins, setCoins] = useState<Coin[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [error, setError] = useState('');
-  const [offset, setOffset] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [orderBy, setOrderBy] = useState<CoinOrderBy>('marketCap');
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>('desc');
-
-  const loadCoins = useCallback(
-    async (nextOffset: number, append: boolean) => {
-      try {
-        if (append) {
-          setIsLoadingMore(true);
-        } else {
-          setIsLoading(true);
-        }
-        setError('');
-        const data = await fetchCoins({
-          limit: PAGE_LIMIT,
-          offset: nextOffset,
-          orderBy,
-          orderDirection,
-        });
-        setTotal(data.stats?.total ?? 0);
-        setCoins(prev => (append ? [...prev, ...data.coins] : data.coins));
-        setOffset(nextOffset);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : 'Unable to load coins. Check your connection.',
-        );
-      } finally {
-        setIsLoading(false);
-        setIsLoadingMore(false);
-      }
-    },
-    [orderBy, orderDirection],
-  );
-
-  useEffect(() => {
-    setCoins([]);
-    setOffset(0);
-    loadCoins(0, false);
-  }, [orderBy, orderDirection, loadCoins]);
-
-  const handleLoadMore = () => {
-    if (isLoading || isLoadingMore) return;
-    const nextOffset = offset + PAGE_LIMIT;
-    if (total && nextOffset >= total) return;
-    loadCoins(nextOffset, true);
-  };
+  const { handleLogout, isAuthBusy } = useLogout();
+  const { toggleFavorite, isFavorite } = useFavoritesState();
+  const {
+    coins,
+    isLoading,
+    isLoadingMore,
+    error,
+    orderBy,
+    orderDirection,
+    setOrderBy,
+    setOrderDirection,
+    loadMore,
+  } = useCoins();
 
   const formatPrice = (value: string) => {
     const parsed = Number(value);
@@ -94,17 +44,13 @@ export default function HomeScreen() {
   const renderItem = ({ item }: ListRenderItemInfo<Coin>) => (
     <Card style={styles.row}>
       <View style={styles.rowHeader}>
-        <AppText variant="bodyLg" style={styles.coinName}>
-          {item.name}
-        </AppText>
+        <AppText variant="bodyLg">{item.name}</AppText>
         <View style={styles.rowHeaderRight}>
-          <AppText tone="muted" style={styles.rank}>
-            #{item.rank}
-          </AppText>
+          <AppText tone="muted">#{item.rank}</AppText>
           <IconButton
-            icon={isFavorite(item.uuid) ? 'Saved' : 'Save'}
+            icon={isFavorite(item.uuid) ? 'FAV' : 'ADD'}
             active={isFavorite(item.uuid)}
-            size="pill"
+            size="sm"
             onPress={() => toggleFavorite(item)}
             style={styles.favoriteButton}
           />
@@ -125,12 +71,7 @@ export default function HomeScreen() {
         rightAction={
           <IconButton
             icon="Logout"
-            onPress={() =>
-              Alert.alert('Sign out', 'Are you sure you want to log out?', [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'Log out', style: 'destructive', onPress: signOut },
-              ])
-            }
+            onPress={handleLogout}
             size="pill"
             disabled={isAuthBusy}
           />
@@ -177,7 +118,7 @@ export default function HomeScreen() {
           data={coins}
           keyExtractor={item => item.uuid}
           renderItem={renderItem}
-          onEndReached={handleLoadMore}
+          onEndReached={loadMore}
           onEndReachedThreshold={0.6}
           contentContainerStyle={styles.list}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -205,7 +146,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 12,
     paddingBottom: 8,
-    backgroundColor: 'transparent',
   },
   filterLabel: {
     marginBottom: 8,
@@ -242,18 +182,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  coinName: {
-    flex: 1,
-    marginRight: 12,
-  },
   rowHeaderRight: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-  },
-  rank: {
-    minWidth: 44,
-    textAlign: 'right',
   },
   favoriteButton: {
     marginLeft: 8,
