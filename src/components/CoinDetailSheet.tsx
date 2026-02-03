@@ -9,7 +9,7 @@ import { Coin, CoinHistoryPoint } from '@lib/coinranking';
 import { useTheme } from '@theme';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { VictoryChart, VictoryLine } from 'victory-native';
+import { VictoryAxis, VictoryChart, VictoryLine } from 'victory-native';
 
 type CoinDetailSheetProps = {
   readonly sheetRef: React.RefObject<BottomSheetModal>;
@@ -32,7 +32,7 @@ export default function CoinDetailSheet({
 }: CoinDetailSheetProps) {
   const theme = useTheme();
   const { formatPrice } = useFormatters();
-  const snapPoints = useMemo(() => ['55%', '90%'], []);
+  const snapPoints = useMemo(() => ['55%', '60%'], []);
 
   const chartData = useMemo(
     () =>
@@ -105,15 +105,29 @@ export default function CoinDetailSheet({
               {error}
             </AppText>
           ) : null}
-          {isLoading ? (
-            <AppText tone="muted">Loading chart...</AppText>
-          ) : history.length === 0 ? (
+          {isLoading && <AppText tone="muted">Loading chart...</AppText>}
+          {!isLoading && history.length === 0 && (
             <AppText tone="muted">No history available.</AppText>
-          ) : (
+          )}
+          {!isLoading && history.length > 0 && (
             <VictoryChart
               height={180}
               padding={{ top: 16, bottom: 24, left: 48, right: 16 }}
             >
+              <VictoryAxis
+                dependentAxis
+                style={{
+                  axis: { stroke: theme.colors.border },
+                  grid: { stroke: theme.colors.border, opacity: 0.5 },
+                  tickLabels: { fill: theme.colors.inkMuted, fontSize: 10 },
+                }}
+              />
+              <VictoryAxis
+                style={{
+                  axis: { stroke: theme.colors.border },
+                  tickLabels: { fill: theme.colors.inkMuted, fontSize: 10 },
+                }}
+              />
               <VictoryLine
                 data={chartData}
                 style={{ data: { stroke: theme.colors.primary } }}
