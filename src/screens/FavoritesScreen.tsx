@@ -1,20 +1,15 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { AppText, Card, IconButton, TopBar } from '../components';
-import { useFavoritesState, useLogout } from '../hooks';
-import { useTheme } from '../theme';
+import { AppText, Card, IconButton, Screen, TopBar } from '../components';
+import { useCoins, useFavoritesState, useLogout } from '../hooks';
 
 export default function FavoritesScreen() {
-  const theme = useTheme();
   const { handleLogout, isAuthBusy } = useLogout();
   const { favorites, isLoading, toggleFavorite } = useFavoritesState();
-  const formatPrice = useCallback((value: string) => {
-    const parsed = Number(value);
-    return Number.isNaN(parsed) ? '--' : parsed.toFixed(2);
-  }, []);
+  const { formatPrice } = useCoins();
 
   return (
-    <View style={[styles.flex, { backgroundColor: theme.colors.canvas }]}>
+    <Screen padded={false} style={styles.flex}>
       <TopBar
         title="Favorites"
         subtitle="Your saved coins in one place."
@@ -63,7 +58,7 @@ export default function FavoritesScreen() {
           )}
         />
       )}
-    </View>
+    </Screen>
   );
 }
 

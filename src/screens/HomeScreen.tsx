@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -6,7 +6,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { AppText, Card, IconButton, PillButton, TopBar } from '../components';
+import { AppText, Card, IconButton, PillButton, Screen, TopBar } from '../components';
 import { useCoins, useFavoritesState, useLogout } from '../hooks';
 import { Coin, CoinOrderBy, OrderDirection } from '../lib/coinranking';
 import { useTheme } from '../theme';
@@ -33,13 +33,8 @@ export default function HomeScreen() {
     setOrderBy,
     setOrderDirection,
     loadMore,
+    formatPrice,
   } = useCoins();
-
-  const formatPrice = (value: string) => {
-    const parsed = Number(value);
-    if (Number.isNaN(parsed)) return '--';
-    return parsed.toFixed(2);
-  };
 
   const renderItem = ({ item }: ListRenderItemInfo<Coin>) => (
     <Card style={styles.row}>
@@ -64,7 +59,7 @@ export default function HomeScreen() {
   );
 
   return (
-    <View style={[styles.flex, { backgroundColor: theme.colors.canvas }]}>
+    <Screen padded={false} style={styles.flex}>
       <TopBar
         title="Market Overview"
         subtitle="Live crypto listings powered by CoinRanking."
@@ -131,7 +126,7 @@ export default function HomeScreen() {
           }
         />
       )}
-    </View>
+    </Screen>
   );
 }
 
